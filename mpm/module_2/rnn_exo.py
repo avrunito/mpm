@@ -47,7 +47,7 @@ if __name__ == "__main__":
     train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, drop_last=False)
     test_loader = DataLoader(test_dataset, batch_size=16, shuffle=True, drop_last=False)
     """Create Model"""
-    device = "cpu"
+    device= torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     input_size = train_dataset[0][0].shape[-1]
     output_size = len(np.unique(train_dataset.y))
     hidden_size = 64
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     optimizer = torch.optim.Adam
     """Train"""
     model = train(model, train_loader, loss_func, optimizer, lr, num_epochs=10,
-                  device="cpu", test_loader=test_loader)
+                  device=device, test_loader=test_loader)
     """Evaluate"""
     train_report, train_cm = evaluate(model, train_loader, device, plot=False)
     test_report, test_cm = evaluate(model, test_loader, device, plot=True)
