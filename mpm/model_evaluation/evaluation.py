@@ -14,8 +14,8 @@ def evaluate(model, data_loader, device, plot=False):
     for x, y in data_loader:
         x, y = x.to(device), y.to(device)
         res = model(x)
-        y_pr.extend(torch.argmax(res, axis=1).detach().numpy())
-        y_gt.extend(y.numpy())
+        y_pr.extend(torch.argmax(res, axis=1).detach().cpu().numpy())
+        y_gt.extend(y.cpu().numpy())
     
     cm = confusion_matrix(y_gt, y_pr)
     if plot:
